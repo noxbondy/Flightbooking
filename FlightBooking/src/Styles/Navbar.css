@@ -1,0 +1,98 @@
+.navbar {
+      display: flex;
+      width: auto;
+      align-items: center;
+      justify-content: space-between;
+      background-color: white;
+      padding: 10px 20px;
+      border-bottom: 2px solid #e5e5e5;
+       margin: 0;
+      font-family: 'Open Sans', sans-serif;
+    }
+
+    .logo {
+      font-weight: bold;
+      font-size: 24px;
+      color: #00205b;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 16px;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #0066cc;
+      padding: 10px 12px;
+      font-weight: bold;
+      border-bottom: 3px solid transparent;
+    }
+
+    .nav-links a.active {
+      border-bottom: 3px solid red;
+      background-color: #f2f2f2;
+    }
+
+    .right-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .hero {
+      background: url('https://www.airfrance.com/etc/designs/afkl/airfrance/img/homepage-bg.jpg') no-repeat center center/cover;
+      height: 450px;
+      color: white;
+      position: relative;
+    }
+
+    .hero-content {
+      position: absolute;
+      bottom: 30px;
+      right: 50px;
+      background-color: rgba(0, 34, 102, 0.8);
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 350px;
+    }
+
+    .hero-content h2 {
+      margin: 0 0 10px;
+      font-size: 20px;
+    }
+
+    .hero-content p {
+      margin: 0 0 10px;
+      font-size: 14px;
+    }
+
+    .hero-content a {
+      color: white;
+      text-decoration: underline;
+      font-weight: bold;
+    }
+
+    .bottom-tabs {
+      display: flex;
+      justify-content: flex-start;
+      gap: 20px;
+      padding: 10px 20px;
+      background: #fff;
+    }
+
+    .bottom-tabs button {
+      padding: 10px 15px;
+      background: #00205b;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .bottom-tabs button:nth-child(1) {
+      background: white;
+      color: #00205b;
+      border: 1px solid #00205b;
+    }
