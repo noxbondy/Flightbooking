@@ -1,4 +1,12 @@
-.search{
-    padding-left: 0px;
-    
+.container{
+    overflow-y: scroll;
 }
+.search{
+    padding-top: 10px;
+}
+
+.mybooking{
+    
+    padding-bottom: 20px;;
+}
+

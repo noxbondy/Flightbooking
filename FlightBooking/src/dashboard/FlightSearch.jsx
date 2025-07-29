@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { ParentContext } from "../context/ParentContext";
 import "../Styles/FlightSearch.css";
+import MyBooking from "../pages/MyBooking";
 const FlightSearch = () => {
   const [flightNumber, setFlightNumber] = useState("");
   const [status, setStatus] = useState("BOOKED"); // Default status
@@ -24,7 +25,7 @@ const FlightSearch = () => {
     }
   };
   return (
-    <div className="p-4">
+    <div className="container s justify-content-center">
       <h2 className="text-xl font-bold mb-4">
         Search Bookings by Flight Number & Status
       </h2>
@@ -37,8 +38,8 @@ const FlightSearch = () => {
           onChange={(e) => setFlightNumber(e.target.value)}
           className="border p-2 mr-2"
         />
-        
-<select
+
+        <select
           value={status}
           onChange={(e) => setStatus(e.target.value)}
           className="border p-2 mr-2"
@@ -57,8 +58,6 @@ const FlightSearch = () => {
             Search{" "}
           </button>
         </div>
-        
-        
       </div>
 
       {error && <p className="text-red-500">{error}</p>}
@@ -69,9 +68,14 @@ const FlightSearch = () => {
             <tr>
               <th className="border px-4 py-2">Booking ID</th>
               <th className="border px-4 py-2">Flight Number</th>
+              <th className="border px-4 py-2">Departure Airport</th>
+              <th className="border px-4 py-2">Destination Airport</th>
+              <th className="border px-4 py-2">Departure Time</th>
+              <th className="border px-4 py-2">Arrival Time</th>
               <th className="border px-4 py-2">Passenger</th>
               <th className="border px-4 py-2">Email</th>
               <th className="border px-4 py-2">Status</th>
+              <th className="border px-4 py-2">Price</th>
             </tr>
           </thead>
           <tbody>
@@ -79,14 +83,26 @@ const FlightSearch = () => {
               <tr key={booking.id}>
                 <td className="border px-4 py-2">{booking.id}</td>
                 <td className="border px-4 py-2">{booking.flightNumber}</td>
+                <td className="border px-4 py-2">{booking.departureAirport}</td>
+                <td className="border px-4 py-2">
+                  {booking.destinationAirport}
+                </td>
+                <td className="border px-4 py-2">{booking.departureTime}</td>
+                <td className="border px-4 py-2">{booking.arrivalTime}</td>
                 <td className="border px-4 py-2">{booking.passengerName}</td>
                 <td className="border px-4 py-2">{booking.passengerEmail}</td>
                 <td className="border px-4 py-2">{booking.status}</td>
+                <td className="border px-4 py-2">{booking.price}</td>
               </tr>
             ))}
           </tbody>
         </table>
       )}
+      <div className="mybooking ">
+        <div className="col-md-12">
+          <MyBooking />
+        </div>
+      </div>
     </div>
   );
 };

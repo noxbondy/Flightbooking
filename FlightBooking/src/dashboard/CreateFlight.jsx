@@ -1,20 +1,19 @@
-import React, { useState } from 'react';
-import '../Styles/CreateFlight.css';
+import React, { useState } from "react";
+import "../Styles/CreateFlight.css";
 
 const CreateFlight = () => {
   const [formData, setFormData] = useState({
-
-    flightNumber: '',
-    departureAirport: '',
-    destinationAirport: '',
-    departureTime: '',
-    arrivalTime: '',
-    price: '',
-    status: 'AVAILABLE', // assuming enum values: AVAILABLE or BOOKED
+    flightNumber: "",
+    departureAirport: "",
+    destinationAirport: "",
+    departureTime: "",
+    arrivalTime: "",
+    price: "",
+    status: "AVAILABLE", // assuming enum values: AVAILABLE or BOOKED
   });
 
   const [createdFlights, setCreatedFlights] = useState([]);
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
 
   const handleChange = (e) => {
     setFormData((prev) => ({
@@ -27,37 +26,74 @@ const CreateFlight = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch('http://localhost:8080/api/flights/createFlight', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
+      const response = await fetch(
+        "http://localhost:8080/api/flights/createFlight",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
 
       if (!response.ok) {
-        throw new Error('Failed to create flight');
+        throw new Error("Failed to create flight");
       }
 
       const data = await response.json();
       setCreatedFlights(data);
-      setMessage('Flight created successfully!');
+      setMessage("Flight created successfully!");
     } catch (error) {
-      console.error('Error:', error);
-      setMessage('Error creating flight.');
+      console.error("Error:", error);
+      setMessage("Error creating flight.");
     }
   };
 
   return (
-    <div className='container mt-4'>
+    <div className="container mt-4">
       <h2>Create New Flight</h2>
       <form onSubmit={handleSubmit}>
-        <input name="flightNumber" type="text" placeholder="Flight Number" onChange={handleChange} required />
-        <input name="departureAirport" type="text" placeholder="Departure Airport" onChange={handleChange} required />
-        <input name="destinationAirport" type="text" placeholder="Destination Airport" onChange={handleChange} required />
-        <input name="departureTime" type="datetime-local" onChange={handleChange} required />
-        <input name="arrivalTime" type="datetime-local" onChange={handleChange} required />
-        <input name="price" type="number" placeholder="Price" onChange={handleChange} required />
+        <input
+          name="flightNumber"
+          type="text"
+          placeholder="Flight Number"
+          onChange={handleChange}
+          required
+        />
+        <input
+          name="departureAirport"
+          type="text"
+          placeholder="Departure Airport"
+          onChange={handleChange}
+          required
+        />
+        <input
+          name="destinationAirport"
+          type="text"
+          placeholder="Destination Airport"
+          onChange={handleChange}
+          required
+        />
+        <input
+          name="departureTime"
+          type="datetime-local"
+          onChange={handleChange}
+          required
+        />
+        <input
+          name="arrivalTime"
+          type="datetime-local"
+          onChange={handleChange}
+          required
+        />
+        <input
+          name="price"
+          type="number"
+          placeholder="Price"
+          onChange={handleChange}
+          required
+        />
         <select name="status" onChange={handleChange}>
           <option value="AVAILABLE">AVAILABLE</option>
           <option value="BOOKED">BOOKED</option>
@@ -73,7 +109,8 @@ const CreateFlight = () => {
           <ul>
             {createdFlights.map((flight, index) => (
               <li key={index}>
-                {flight.flightNumber} from {flight.departureAirport} to {flight.destinationAirport}
+                {flight.flightNumber} from {flight.departureAirport} to{" "}
+                {flight.destinationAirport}
               </li>
             ))}
           </ul>

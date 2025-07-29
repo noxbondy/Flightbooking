@@ -1,6 +1,11 @@
-.search{
-    padding-left: 330px;
-    padding-top: 15px;
+.container{
+    align-items: center;
+    height: auto;
+    padding-bottom: 30px;
+    
+.buttonb{
+    align-items: center;
+    
 }
 .Details{
     padding-bottom: 30px;

@@ -1,24 +1,28 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import '../Styles/Navbar.css'
+import React from "react";
+import { Link } from "react-router-dom";
+import "../Styles/Navbar.css";
 
- const Navbar = () => {
+const Navbar = () => {
   return (
-    <div className="navbar">
-         <div class="logo">✈️ FlightBook</div>
-  <div class="nav-links">
-      <a href="BookFlight" class="active">Book a flight</a>
-      <a href="#">Check-in</a>
-      <a href="MyBooking">My Bookings</a>
-      
-      
-    
-      <Link to="/dashboard">Dashboard</Link>
+    <div>
+      <nav className="navbar">
+        <div className="logo">✈️ FlightBook</div>
+        <div className="nav-links">
+          <Link to="/BookFlight" className="active">
+            Book a flight
+          </Link>
+          <Link to="/YourFlights">YourFlights</Link>
+          <Link to="/MyBooking">My Bookings</Link>
+          <Link to="/dashboard">Dashboard</Link>
+        </div>
+      </nav>
+      <div className="banner">
+  <img src="/banner.jpg" alt="Air Booking" />
+  <div className="banner-text">Book Your Flight </div>
+  <h2> aome text </h2>
+</div>
     </div>
-    
- 
-  
-  </div>
-  )
-}
+  );
+};
+
 export default Navbar;

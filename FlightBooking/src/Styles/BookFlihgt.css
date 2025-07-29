@@ -10,6 +10,11 @@
   padding-top: 10px;
   
 }
+.card-content h2{
+
+    padding-bottom: 30px;
+    font-size: 20px;
+}
 
 .form-group {
     display: flex;

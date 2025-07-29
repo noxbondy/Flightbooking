@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import "../Styles/BookFlihgt.css";
-import AvailableFlights from "../dashboard/AvailableFlights";
-
 
 const BookFlight = () => {
   const [status, setStatus] = useState("AVAILABLE");
@@ -16,9 +14,8 @@ const BookFlight = () => {
   const [bookingMessage, setBookingMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  
-  const apiEndpoint = "http://localhost:8080/api/flights/search";
 
+  const apiEndpoint = "http://localhost:8080/api/flights/search";
 
   const searchFlights = async () => {
     if (!departureAirport || !destinationAirport) {
@@ -61,8 +58,6 @@ const BookFlight = () => {
     }
   };
 
-  
-
   const handleSelectFlight = (flight) => {
     setSelectedFlight(flight);
     setName("");
@@ -70,50 +65,47 @@ const BookFlight = () => {
     setBookingMessage("");
   };
 
-const handleBooking = async () => {
-  if (!name || !email) {
-    setBookingMessage("Please enter your name and email.");
-    return;
-  }
-
-const bookingEndpoint = `http://localhost:8080/api/flights/${selectedFlight.id}/book`;
-
-    try {
-    const response = await fetch(bookingEndpoint, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ passengerName: name, passengerEmail: email }),
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(errorText || "Booking failed. Try again.");
+  const handleBooking = async () => {
+    if (!name || !email) {
+      setBookingMessage("Please enter your name and email.");
+      return;
     }
 
-    setBookingMessage("✅ Flight booked successfully!");
-    setSelectedFlight(null);
-  } catch (err) {
-    setBookingMessage("❌ Booking failed: " + err.message);
-  }
+    const bookingEndpoint = `http://localhost:8080/api/flights/${selectedFlight.id}/book`;
+
+    try {
+      const response = await fetch(bookingEndpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ passengerName: name, passengerEmail: email }),
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(errorText || "Booking failed. Try again.");
+      }
+
+      setBookingMessage("✅ Flight booked successfully!");
+      setSelectedFlight(null);
+    } catch (err) {
+      setBookingMessage("❌ Booking failed: " + err.message);
+    }
   };
-
-  
-
-
 
   return (
     <div className="container justify-content-center">
-      
       <div className="col-md-12">
         <div className="card">
           <div className="card-content">
-            
             <h2>Search Available Flights</h2>
 
             <div style={{ marginBottom: 12 }}>
               <label>
                 Status:{" "}
-                <select value={status} onChange={(e) => setStatus(e.target.value)}>
+                <select
+                  value={status}
+                  onChange={(e) => setStatus(e.target.value)}
+                >
                   <option value="AVAILABLE">AVAILABLE</option>
                 </select>
               </label>
@@ -154,20 +146,22 @@ const bookingEndpoint = `http://localhost:8080/api/flights/${selectedFlight.id}/
             </div>
           </div>
         </div>
-        
       </div>
 
       {error && (
-        <p style={{ color: "red", marginTop: 16, fontWeight: "bold" }}>{error}</p>
+        <p style={{ color: "red", marginTop: 16, fontWeight: "bold" }}>
+          {error}
+        </p>
       )}
 
       {flights.length > 0 && (
         <ul style={{ marginTop: 20 }}>
           {flights.map((flight) => (
             <li key={flight.id} style={{ marginBottom: 20 }}>
-              <strong>{flight.flightNumber}</strong> from {flight.departureAirport} to{" "}
-              {flight.destinationAirport} — Status: {flight.status} — Departure: {flight.departureTime}
-              — Arrival: {flight.arrivalTime} — Price: ${flight.price}
+              <strong>{flight.flightNumber}</strong> from{" "}
+              {flight.departureAirport} to {flight.destinationAirport} — Status:{" "}
+              {flight.status} — Departure: {flight.departureTime}— Arrival:{" "}
+              {flight.arrivalTime} — Price: ${flight.price}
               <br />
               <button
                 className="button is-small is-primary"
@@ -192,7 +186,8 @@ const bookingEndpoint = `http://localhost:8080/api/flights/${selectedFlight.id}/
           }}
         >
           <h3 style={{ marginBottom: 10 }}>
-            Booking: {selectedFlight.flightNumber} from {selectedFlight.departureAirport} to{" "}
+            Booking: {selectedFlight.flightNumber} from{" "}
+            {selectedFlight.departureAirport} to{" "}
             {selectedFlight.destinationAirport}
           </h3>
           <label>
@@ -238,16 +233,14 @@ const bookingEndpoint = `http://localhost:8080/api/flights/${selectedFlight.id}/
             </p>
           )}
         </div>
-        
       )}
 
       {!loading && !error && flights.length === 0 && (
-        <p style={{ marginTop: 20, fontStyle: "italic" }}>No flights found yet.</p>
-        
+        <p style={{ marginTop: 20, fontStyle: "italic" }}>
+          No flights found yet.
+        </p>
       )}
-      <AvailableFlights/>
     </div>
-    
   );
 };
 
