@@ -52,7 +52,7 @@ const FlightSearch = () => {
         <div className="search">
           <button
             onClick={handleSearch}
-            className="button is-normal"
+            className="button is-link is-outlined"
             type="submit"
           >
             Search{" "}

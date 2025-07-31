@@ -40,7 +40,7 @@ const FilterByPrice = () => {
           value={maxPrice}
           onChange={(e) => setMaxPrice(e.target.value)}
         />
-        <button className="btn btn-primary mt-2" onClick={handleFetchFlights}>
+        <button className="button is-fullwidth" onClick={handleFetchFlights}>
           Search Flights
         </button>
       </div>

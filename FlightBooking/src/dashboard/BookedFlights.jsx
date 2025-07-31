@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { ParentContext } from "../context/ParentContext";
-
+import { TfiSaveAlt } from "react-icons/tfi";
 const BookedFlights = ({ status = "BOOKED" }) => {
   
   const [flights, setFlights] = useState([]);
@@ -77,18 +77,18 @@ const BookedFlights = ({ status = "BOOKED" }) => {
       <h2>Booked Flights (Status: {status})</h2>
       <div className="mb-2">
         <button
-          className="btn btn-primary me-2"
+          className="button is-focused"
           onClick={handleEdit}
           disabled={selectedIds.length === 0}
         >
           Edit
         </button>
         <button
-          className="btn btn-success"
+          className="button is-focused"
           onClick={handleSave}
           disabled={!editMode}
-        >
-          Save Changes
+        ><TfiSaveAlt />
+          
         </button>
       </div>
       <table className="table table-bordered table-hover table-striped">

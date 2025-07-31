@@ -14,6 +14,10 @@
       font-weight: bold;
       font-size: 24px;
       color: #00205b;
+      padding-left: 20px;
+     display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
     .nav-links {
@@ -32,6 +36,10 @@
     .nav-links a.active {
       border-bottom: 3px solid red;
       background-color: #f2f2f2;
+    }
+    .nav-links a:hover {
+      background-color: #e7dcf3;
+      
     }
 
     .right-actions {

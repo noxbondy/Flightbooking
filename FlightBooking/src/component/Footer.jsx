@@ -13,8 +13,7 @@ const Footer = () => {
             <div className="col-md-3 mb-3">
               <h5>About Us</h5>
               <p>
-                We are committed to providing the best IT services to our
-                customers.
+                we are committed to better Service Low Price and Flexible 
               </p>
             </div>
 

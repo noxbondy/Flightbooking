@@ -82,14 +82,14 @@ const AllFlights = () => {
 
           <div className="mb-2">
             <button
-              className="btn btn-primary me-2"
+              className="button is-link is-outlined"
               onClick={handleEdit}
               disabled={selectedIds.length === 0}
             >
               Edit
             </button>
             <button
-              className="btn btn-success"
+              className="button is-link is-outlined"
               onClick={handleSave}
               disabled={!editMode}
             >

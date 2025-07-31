@@ -98,7 +98,7 @@ const CreateFlight = () => {
           <option value="AVAILABLE">AVAILABLE</option>
           <option value="BOOKED">BOOKED</option>
         </select>
-        <button type="submit">Create Flight</button>
+        <button className="button is-fullwidth" type="submit">Create Flight</button>
       </form>
 
       {message && <p>{message}</p>}

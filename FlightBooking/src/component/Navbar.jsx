@@ -2,15 +2,17 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "../Styles/Navbar.css";
 import SliderBanner from "./SliderBanner";
+import { MdFlightTakeoff } from "react-icons/md";
 
 
 const Navbar = () => {
   return (
     <div>
       <nav className="navbar">
-        <div className="logo">✈️ FlightBook</div>
+        <div className="logo">  <MdFlightTakeoff />FlightBook</div>
+        
         <div className="nav-links">
-          <Link to="/BookFlight" className="active">
+          <Link to="/BookFlight">
             Book a flight
           </Link>
           <Link to="/YourFlights">YourFlights</Link>
