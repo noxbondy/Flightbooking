@@ -1,0 +1,51 @@
+.banner-container {
+  width: 100%;
+  height: 400px;
+  position: relative;
+  overflow: hidden;
+}
+
+.slide {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  transition: background-image 0.5s ease-in-out;
+}
+
+.quote-box {
+  position: absolute;
+  left: 5%;
+  top: 40%;
+  background-color: rgba(255, 255, 255, 0.85);
+  padding: 1rem 2rem;
+  border-radius: 6px;
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #0a2f73;
+  max-width: 400px;
+}
+
+.nav-dots {
+  position: absolute;
+  bottom: 20px;
+  right: 30px;
+  display: flex;
+  gap: 8px;
+}
+
+.dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 2px;
+  background-color: white;
+  opacity: 0.5;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.dot.active {
+  background-color: #0046a2;
+  opacity: 1;
+}

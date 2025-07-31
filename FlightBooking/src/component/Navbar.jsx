@@ -1,6 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "../Styles/Navbar.css";
+import SliderBanner from "./SliderBanner";
+
 
 const Navbar = () => {
   return (
@@ -15,12 +17,8 @@ const Navbar = () => {
           <Link to="/MyBooking">My Bookings</Link>
           <Link to="/dashboard">Dashboard</Link>
         </div>
+        <SliderBanner/>
       </nav>
-      <div className="banner">
-  <img src="/banner.jpg" alt="Air Booking" />
-  <div className="banner-text">Book Your Flight </div>
-  <h2> aome text </h2>
-</div>
     </div>
   );
 };
