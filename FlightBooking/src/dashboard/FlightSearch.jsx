@@ -30,7 +30,7 @@ const FlightSearch = () => {
         Search Bookings by Flight Number & Status
       </h2>
 
-      <div className="mb-4">
+      <div className="mb-6 justify-content-center">
         <input
           type="text"
           placeholder="Flight Number"
