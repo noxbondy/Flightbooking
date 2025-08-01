@@ -1,8 +1,8 @@
-import { defineConfig } from 'vite' // ✅ correct function name (all lowercase)
-import react from '@vitejs/plugin-react'
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [react()],
-  base: '/FlightBooking-react/'
-})
+  base: '/FlightBooking-react/', // must match your repo name
+});
 
