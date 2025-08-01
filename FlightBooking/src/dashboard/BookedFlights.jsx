@@ -3,7 +3,6 @@ import axios from "axios";
 import { ParentContext } from "../context/ParentContext";
 import { TfiSaveAlt } from "react-icons/tfi";
 const BookedFlights = ({ status = "BOOKED" }) => {
-  
   const [flights, setFlights] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -87,8 +86,8 @@ const BookedFlights = ({ status = "BOOKED" }) => {
           className="button is-focused"
           onClick={handleSave}
           disabled={!editMode}
-        ><TfiSaveAlt />
-          
+        >
+          <TfiSaveAlt />
         </button>
       </div>
       <table className="table table-bordered table-hover table-striped">
@@ -129,9 +128,9 @@ const BookedFlights = ({ status = "BOOKED" }) => {
                     value={editData[flight.id]?.flightNumber || ""}
                     onChange={(e) => handleInputChange(flight.id, e)}
                   />
-                ) : (flight.flightNumber)}
-                  
-                
+                ) : (
+                  flight.flightNumber
+                )}
               </td>
 
               {/* Departure Airport */}

@@ -1,10 +1,9 @@
 .container {
-    overflow-y: scroll;
+  overflow-y: scroll;
 }
-.container h2{
-    padding-bottom: 30px;
-    font-size: 20px;
-    color: #00205b;
-    font-weight: bold;
-    
+.container h2 {
+  padding-bottom: 30px;
+  font-size: 20px;
+  color: #00205b;
+  font-weight: bold;
 }

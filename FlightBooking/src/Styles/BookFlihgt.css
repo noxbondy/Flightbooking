@@ -1,6 +1,5 @@
-
-.container{
-    padding-top: 20px;
+.container {
+  padding-top: 20px;
 }
 .card-content {
   display: flex;
@@ -8,24 +7,20 @@
   align-items: center;
   margin-top: 20px;
   padding-top: 10px;
-  
 }
-.card-content h2{
-
-    padding-bottom: 30px;
-    font-size: 20px;
+.card-content h2 {
+  padding-bottom: 30px;
+  font-size: 20px;
 }
 
 .form-group {
-    display: flex;
-    gap: 20px;
-  
+  display: flex;
+  gap: 20px;
 }
-.scarch{
-    display: inline-flex;
-    position:relative;
-    margin-left: 900px;
-    gap: 20px;
-    padding-bottom: 10px;
-    
+.scarch {
+  display: inline-flex;
+  position: relative;
+  margin-left: 900px;
+  gap: 20px;
+  padding-bottom: 10px;
 }

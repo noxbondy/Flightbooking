@@ -1,49 +1,46 @@
+.main-content {
+  flex: 1;
+  overflow: hidden;
+  height: auto;
+  min-height: max-content;
+  overflow-y: scroll;
+}
+.container {
+  padding: 20px;
+  padding-bottom: 100px;
+  max-width: 1200px;
+  margin: 0 auto;
+  background-color: #fff;
+  height: auto;
+}
 
-        .main-content {
-          flex: 1;
-          overflow: hidden;
-          height: auto;
-          min-height: max-content;
-          overflow-y: scroll;
-        }
-        .container {
-          padding: 20px;
-          padding-bottom: 100px;
-          max-width: 1200px;
-          margin: 0 auto;
-          background-color: #fff;
-          height: auto;
-         
-        }
-        
-        .table-responsive {
-          max-height: 600px;  /* Limits height */
-          overflow-y: auto;  /* Enables vertical scrolling */
-          overflow-x: auto;  /* Enables horizontal scrolling if needed */
-          border: 1px solid #ddd;
-         
-        }
-        .table {
-          width: 100%;
-          border-collapse: collapse;
-        }
-        .table th, .table td {
-          padding: 12px;
-          border: 1px solid #ddd;
-          white-space: nowrap;
-          
-        }
-        thead.table-dark {
-          background-color: #343a40;
-          color: white;
-        }
-        tbody tr:nth-child(even) {
-          background-color: #f8f9fa;
-        }
-        tbody tr:hover {
-          background-color: #e9ecef;
-          cursor: pointer;
-        }
-        .text-center {
-          text-align: center;
-        }
+.table-responsive {
+  max-height: 600px; /* Limits height */
+  overflow-y: auto; /* Enables vertical scrolling */
+  overflow-x: auto; /* Enables horizontal scrolling if needed */
+  border: 1px solid #ddd;
+}
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.table th,
+.table td {
+  padding: 12px;
+  border: 1px solid #ddd;
+  white-space: nowrap;
+}
+thead.table-dark {
+  background-color: #343a40;
+  color: white;
+}
+tbody tr:nth-child(even) {
+  background-color: #f8f9fa;
+}
+tbody tr:hover {
+  background-color: #e9ecef;
+  cursor: pointer;
+}
+.text-center {
+  text-align: center;
+}

@@ -127,7 +127,7 @@ const AvailableFlights = () => {
                       className="btn btn-primary btn-sm"
                       onClick={() => handleSelectFlight(flight)}
                     >
-                     <MdOutlineFlightTakeoff />
+                      <MdOutlineFlightTakeoff />
                     </button>
                   </td>
                 </tr>

@@ -12,9 +12,7 @@ const Footer = () => {
           <div className="row">
             <div className="col-md-3 mb-3">
               <h5>About Us</h5>
-              <p>
-                we are committed to better Service Low Price and Flexible 
-              </p>
+              <p>we are committed to better Service Low Price and Flexible</p>
             </div>
 
             <div className="col-md-3">
@@ -62,7 +60,6 @@ const Footer = () => {
             <div class="col-md-3 mb-12">
               <h5>Social-icons</h5>
               <div className="social-icons">
-                
                 <a href="https://github.com/noxbondy">
                   <FaFacebook />
                 </a>

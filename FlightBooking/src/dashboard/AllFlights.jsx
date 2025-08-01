@@ -187,9 +187,7 @@ const AllFlights = () => {
                               name="departureTime"
                               value={
                                 editData[flight.id]?.departureTime
-                                  ? new Date(
-                                      editData[flight.id].departureTime
-                                    )
+                                  ? new Date(editData[flight.id].departureTime)
                                       .toISOString()
                                       .slice(0, 16)
                                   : new Date(flight.departureTime)

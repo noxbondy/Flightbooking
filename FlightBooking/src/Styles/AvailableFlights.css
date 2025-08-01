@@ -1,17 +1,14 @@
-
-.container{
-    overflow-y: scroll;
+.container {
+  overflow-y: scroll;
 }
-.form-group{
-    display: flex;
-    padding-bottom: 50px;
-    padding-left: 190px;
-    align-items: center;
-
+.form-group {
+  display: flex;
+  padding-bottom: 50px;
+  padding-left: 190px;
+  align-items: center;
 }
-.available{
-    text-align: center;
-    padding-bottom: 20px;
-    font-size: 20px;
-    
+.available {
+  text-align: center;
+  padding-bottom: 20px;
+  font-size: 20px;
 }
