@@ -1,11 +1,8 @@
-import { DefineConfig } from 'vite'
+import { defineConfig } from 'vite' // ✅ correct function name (all lowercase)
 import react from '@vitejs/plugin-react'
 
-
-
-// https://vitejs.dev/config/
-export default DefineConfig({
+export default defineConfig({
   plugins: [react()],
-  base: "/FlightBooking-react/"
+  base: '/FlightBooking-react/'
 })
 
