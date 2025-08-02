@@ -4,36 +4,29 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import se.lexicon.flightbooking.dto.AvailableFlightDTO;
-import se.lexicon.flightbooking.dto.BookFlightRequestDTO;
-import se.lexicon.flightbooking.dto.FlightBookingDTO;
-import se.lexicon.flightbooking.dto.FlightListDTO;
-
+import se.lexicon.flightbooking.dto.*;
 import se.lexicon.flightbooking.entity.FlightBooking;
 import se.lexicon.flightbooking.entity.FlightStatus;
 import se.lexicon.flightbooking.mapper.FlightBookingMapper;
 import se.lexicon.flightbooking.mapper.FlightMapper;
 import se.lexicon.flightbooking.repository.FlightRepository;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static se.lexicon.flightbooking.mapper.FlightBookingMapper.toFlightListDTO;
+import static se.lexicon.flightbooking.mapper.FlightMapper.toFlightListDTO;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class FlightBookingServiceImpl implements FlightBookingService {
 
-    private final FlightRepository flightBookingRepository;
+    private final FlightRepository flightRepository;
     private final FlightBookingMapper mapper;
-    private final FlightBookingMapper flightBookingMapper;
-
 
     @Override
     public FlightBookingDTO bookFlight(Long flightId, BookFlightRequestDTO bookingRequest) {
-        FlightBooking flight = flightBookingRepository.findById(flightId)
+        FlightBooking flight = flightRepository.findById(flightId)
                 .orElseThrow(() -> new RuntimeException("Flight not found"));
 
         if (flight.getStatus() != FlightStatus.AVAILABLE) {
@@ -44,26 +37,28 @@ public class FlightBookingServiceImpl implements FlightBookingService {
         flight.setPassengerEmail(bookingRequest.passengerEmail());
         flight.setStatus(FlightStatus.BOOKED);
 
-        FlightBooking savedFlight = flightBookingRepository.save(flight);
-        return mapper.toDTO(savedFlight);
+        FlightBooking saved = flightRepository.save(flight);
+        return mapper.toDTO(saved);
     }
 
     @Override
     public void cancelFlight(Long flightId, String passengerEmail) {
-        FlightBooking flight = flightBookingRepository.findById(flightId)
+        FlightBooking flight = flightRepository.findById(flightId)
                 .orElseThrow(() -> new RuntimeException("Flight not found"));
 
         if (!flight.getPassengerEmail().equals(passengerEmail)) {
             throw new RuntimeException("Passenger email does not match");
         }
 
+        flight.setPassengerName(null);
+        flight.setPassengerEmail(null);
         flight.setStatus(FlightStatus.AVAILABLE);
-        flightBookingRepository.save(flight);
+        flightRepository.save(flight);
     }
 
     @Override
     public List<AvailableFlightDTO> findAvailableFlights() {
-        return flightBookingRepository.findByStatus(FlightStatus.AVAILABLE)
+        return flightRepository.findByStatus(FlightStatus.AVAILABLE)
                 .stream()
                 .map(mapper::toAvailableFlightDTO)
                 .collect(Collectors.toList());
@@ -71,18 +66,15 @@ public class FlightBookingServiceImpl implements FlightBookingService {
 
     @Override
     public List<FlightListDTO> bookedAllFlights(FlightStatus status) {
-        return flightBookingRepository.findByStatus(status)
+        return flightRepository.findByStatus(status)
                 .stream()
-                .map(FlightMapper::toFlightListDTO) // ✅ Must be static and import must be correct
+                .map(FlightMapper::toFlightListDTO)
                 .collect(Collectors.toList());
     }
 
-
-
-
     @Override
     public List<FlightBookingDTO> findBookingsByEmail(String email) {
-        return flightBookingRepository.findByPassengerEmail(email)
+        return flightRepository.findByPassengerEmail(email)
                 .stream()
                 .map(mapper::toDTO)
                 .collect(Collectors.toList());
@@ -90,12 +82,11 @@ public class FlightBookingServiceImpl implements FlightBookingService {
 
     @Override
     public List<FlightListDTO> findAll() {
-        return flightBookingRepository.findAll()
+        return flightRepository.findAll()
                 .stream()
                 .map(mapper::toListDTO)
                 .collect(Collectors.toList());
     }
-
 
     @Override
     public List<FlightListDTO> createFlights(FlightListDTO flightListDTO) {
@@ -111,14 +102,13 @@ public class FlightBookingServiceImpl implements FlightBookingService {
                 .passengerEmail(null)
                 .build();
 
-        FlightBooking saved = flightBookingRepository.save(newFlight);
-
+        FlightBooking saved = flightRepository.save(newFlight);
         return List.of(mapper.toListDTO(saved));
     }
 
     @Override
     public FlightListDTO updateFlight(Long id, FlightListDTO dto) {
-        FlightBooking flight = flightBookingRepository.findById(id)
+        FlightBooking flight = flightRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Flight not found"));
 
         flight.setFlightNumber(dto.flightNumber());
@@ -131,62 +121,65 @@ public class FlightBookingServiceImpl implements FlightBookingService {
         flight.setPassengerEmail(dto.passengerEmail());
         flight.setPrice(dto.price());
 
-        flightBookingRepository.save(flight);
-
+        flightRepository.save(flight);
         return toFlightListDTO(flight);
     }
 
     @Override
     public List<FlightListDTO> findByDestination(String destinationAirport) {
-        List<FlightBooking> flights = flightBookingRepository.findByDestinationAirport(destinationAirport);
-        return flights.stream()
+        return flightRepository.findByDestinationAirport(destinationAirport)
+                .stream()
                 .map(FlightMapper::toFlightListDTO)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<AvailableFlightDTO> findByStatusAndDepartureAirportAndDestinationAirport(FlightStatus status, String departureAirport, String destinationAirport) {
+    public List<AvailableFlightDTO> findByStatusAndDepartureAirportAndDestinationAirport(
+            FlightStatus status,
+            String departureAirport,
+            String destinationAirport) {
+
         String dep = departureAirport == null ? "" : departureAirport.trim();
         String dest = destinationAirport == null ? "" : destinationAirport.trim();
 
-        System.out.println("STATUS: " + status);
-        System.out.println("DEPARTURE: '" + dep + "'");
-        System.out.println("DESTINATION: '" + dest + "'");
+        List<FlightBooking> flights = flightRepository
+                .findByStatusAndDepartureAirportAndDestinationAirport(status, dep, dest);
 
-
-        List<FlightBooking> bookings = flightBookingRepository
-                .findByStatusAndDepartureAirportAndDestinationAirport(
-                        status, dep, dest
-                );
-
-        return bookings.stream()
-                .map(flightBookingMapper::toAvailableFlightDTO)
+        return flights.stream()
+                .map(mapper::toAvailableFlightDTO)
                 .collect(Collectors.toList());
     }
 
-
     @Override
     public FlightBookingDTO findByFlightNumberAndPassengerEmail(String flightNumber, String passengerEmail) {
-        FlightBooking booking = flightBookingRepository
+        FlightBooking booking = flightRepository
                 .findByFlightNumberAndPassengerEmail(flightNumber, passengerEmail);
 
         if (booking == null) {
             throw new RuntimeException("Booking not found for flight number: " + flightNumber + " and email: " + passengerEmail);
         }
 
-        return flightBookingMapper.toDTO(booking);
+        return mapper.toDTO(booking);
     }
 
     @Override
     public List<FlightBooking> findBookingsByFlightNumberAndStatus(String flightNumber, FlightStatus status) {
-        return flightBookingRepository.findByFlightNumberAndStatus(flightNumber, status);
+        return flightRepository.findByFlightNumberAndStatus(flightNumber, status);
     }
 
     @Override
     public List<AvailableFlightDTO> findBookingsByMaxPrice(Double maxPrice) {
-        List<FlightBooking> bookings = flightBookingRepository.findByPriceLessThanEqual(maxPrice);
-        return bookings.stream()
-                .map(flightBookingMapper::toAvailableFlightDTO)
+        return flightRepository.findByPriceLessThanEqual(maxPrice)
+                .stream()
+                .map(mapper::toAvailableFlightDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<FlightBookingDTO> fetchAllFlightList() {
+        return flightRepository.findAll()
+                .stream()
+                .map(mapper::toDTO)
                 .collect(Collectors.toList());
     }
 }

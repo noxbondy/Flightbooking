@@ -13,6 +13,7 @@ public record FlightListDTO(
         LocalDateTime arrivalTime,
         String status,
         Double price
+
 ) {
 
 

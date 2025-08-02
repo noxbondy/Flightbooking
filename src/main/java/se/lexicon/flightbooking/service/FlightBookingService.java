@@ -43,4 +43,7 @@ public interface FlightBookingService {
     List<FlightBooking> findBookingsByFlightNumberAndStatus(String flightNumber, FlightStatus status);
 
     List<AvailableFlightDTO> findBookingsByMaxPrice(Double maxPrice);
+    List<FlightBookingDTO> fetchAllFlightList();
+
+
 }

@@ -1,14 +1,9 @@
 package se.lexicon.flightbooking.controller;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
-import org.springframework.ai.tool.annotation.Tool;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import se.lexicon.flightbooking.service.AppToolCalling;
+import reactor.core.publisher.Flux;
 import se.lexicon.flightbooking.service.ChatClientService;
-import se.lexicon.flightbooking.service.OpenAIService;
-
 import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:5173")
@@ -16,53 +11,69 @@ import java.util.List;
 @RequestMapping("/api/chat")
 public class OpenAIController {
 
-    private final OpenAIService service;
-    private final ChatClientService clientService;
-    private final AppToolCalling appToolCalling;
+    private final ChatClientService chatClientService;
 
     @Autowired
-    public OpenAIController(OpenAIService service, ChatClientService clientService, AppToolCalling appToolCalling) {
-        this.service = service;
-        this.clientService = clientService;
-        this.appToolCalling = appToolCalling;
+    public OpenAIController(ChatClientService chatClientService) {
+        this.chatClientService = chatClientService;
     }
 
-    @GetMapping
-    public String welcome() {
-        return "Welcome to the OpenAI Chat API!";
+    @PostMapping("/chat")
+    public ResponseEntity<String> chat(@RequestParam String conversationId, @RequestBody ChatRequest request) {
+        if (request.getQuery() == null || request.getQuery().isBlank()) {
+            return ResponseEntity.badRequest().body("Query cannot be empty");
+        }
+        try {
+            String response = chatClientService.chatWithMemory(request.getQuery(), conversationId);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("❌ Error processing request: " + e.getMessage());
+        }
     }
 
-    @GetMapping("/messages")
-    public String processSimpleChatQuery(
-            @NotNull(message = "Question cannot be null")
-            @NotBlank(message = "Question cannot be blank")
-            @Size(max = 200, message = "Question cannot exceed 200 characters")
-            @RequestParam String question
-    ) {
-        return service.processSimpleChatQuery(question);
+    @PostMapping("/chat/stream")
+    public Flux<String> chatStream(@RequestParam String conversationId, @RequestBody ChatRequest request) {
+        return chatClientService.chatWithMemoryRealTime(request.getQuery(), conversationId);
     }
 
-    @GetMapping("/messages/new-chat-memory")
-    public String newChatMemory(@RequestParam
-                                @NotNull(message = "Conversation ID cannot be null")
-                                @NotBlank(message = "Conversation ID cannot be blank")
-                                @Size(max = 36, message = "Conversation ID cannot exceed 36 characters")
-                                String conversationId,
-                                @RequestParam
-                                @NotNull(message = "Question cannot be null")
-                                @NotBlank(message = "Question cannot be blank")
-                                @Size(max = 200, message = "Question cannot exceed 200 characters")
-                                String question) {
-        System.out.println("conversationId = " + conversationId);
-        System.out.println("question = " + question);
-        return clientService.chatMemory(question, conversationId);
+    @GetMapping("/chat/history/{conversationId}")
+    public ResponseEntity<List<?>> getMessages(@PathVariable String conversationId) {
+        return ResponseEntity.ok(chatClientService.getMessages(conversationId));
     }
 
-    @GetMapping("/test-flights-by-destination")
-    public List<String> testFlightsByDestination(@RequestParam String destination) {
-        return appToolCalling.findFlightsByDestination(destination);
+    @DeleteMapping("/chat/clear/{conversationId}")
+    public ResponseEntity<String> clearChat(@PathVariable String conversationId) {
+        chatClientService.clearChatMemory(conversationId);
+        return ResponseEntity.ok("✅ Chat memory cleared for conversation ID: " + conversationId);
     }
 
+    // Optional test endpoint
+    @GetMapping("/ping")
+    public String ping() {
+        return "Flight Booking Assistant is up and running 🚀";
+    }
 
+    // Inner static class to receive query
+    public static class ChatRequest {
+        private String query;
 
+        public ChatRequest() {
+        }
+
+        public ChatRequest(String query) {
+            this.query = query;
+        }
+
+        public String getQuery() {
+            return query;
+        }
+
+        public void setQuery(String query) {
+            this.query = query;
+        }
+    }
 }
+
+
+
+

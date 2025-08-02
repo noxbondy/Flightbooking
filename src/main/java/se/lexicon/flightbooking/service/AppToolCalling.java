@@ -110,6 +110,20 @@ public class AppToolCalling {
         return "✅ Found booking: " + booking.getFlightNumber() + " from " + booking.getDepartureAirport() +
                 " to " + booking.getDestinationAirport() + " (Status: " + booking.getStatus() + ")";
     }
+    @Tool(description = "Fetches all flight list from the application.")
+    public List<String> fetchAllFlightList() {
+        List<FlightBooking> flights = flightRepository.findAll();
 
+        if (flights.isEmpty()) return List.of("No flights found.");
+
+        return flights.stream()
+                .map(f -> String.format("✈️ Flight %s from %s to %s on %s, Price: €%.2f",
+                        f.getFlightNumber(),
+                        f.getDepartureAirport(),
+                        f.getDestinationAirport(),
+                        f.getDepartureTime(),
+                        f.getPrice()))
+                .toList();
+    }
 
 }

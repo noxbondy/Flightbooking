@@ -66,9 +66,23 @@ public class FlightBookingMapper {
                 booking.getArrivalTime(),
                 booking.getStatus().name(),
                 booking.getPrice()
+
         );
     }
 
-
+    public FlightBookingDTO fromListDTO(FlightListDTO dto) {
+        return new FlightBookingDTO(
+                dto.id(),
+                dto.flightNumber(),
+                dto.departureAirport(),
+                dto.destinationAirport(),
+                dto.departureTime(),
+                dto.arrivalTime(),
+                dto.passengerName(),
+                dto.passengerEmail(),
+                dto.status(),
+                dto.price()
+        );
+    }
 
 }

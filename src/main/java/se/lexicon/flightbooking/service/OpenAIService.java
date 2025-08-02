@@ -1,18 +1,15 @@
 package se.lexicon.flightbooking.service;
+import org.apache.logging.log4j.message.Message;
 import org.springframework.web.multipart.MultipartFile;
 import reactor.core.publisher.Flux;
+import se.lexicon.flightbooking.dto.FlightBookingDTO;
+
+import java.util.List;
 
 public interface OpenAIService {
 
-    String processSimpleChatQuery(String query);
-
-    Flux<String> processSimpleChatQueryWithStream(String query);
-    String processSimpleChatQueryWithContext(String query);
-    String processImage(MultipartFile file);
-    String generateImageAndReturnUrl(String query);
-    String speechToText(MultipartFile file);
-    byte[] textToSpeech(String text);
-    String chatMemory(String query, String conversationId);
-
-    void resetChatMemory(String conversationId);
+    String chatWithMemory(String query, String conversationId);
+    Flux<String> chatWithMemoryRealTime(String query, String conversationId);
+    void clearChatMemory(String conversationId);
+    List<Message> getMessages(String conversationId);
 }
