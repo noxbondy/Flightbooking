@@ -7,10 +7,10 @@ import java.util.List;
 
 public interface ChatClientService {
 
-    String chatMemory(String question, String conversationId);
+    String chatMemory(String question);
 
-    String chatWithMemory(String query, String conversationId);
-    Flux<String> chatWithMemoryRealTime(String query, String conversationId);
-    void clearChatMemory(String conversationId);
-    List<Message> getMessages(String conversationId);
+    String chatWithMemory(String query);
+    Flux<String> chatWithMemoryRealTime(String query);
+    void clearChatMemory();
+    List<Message> getMessages();
 }

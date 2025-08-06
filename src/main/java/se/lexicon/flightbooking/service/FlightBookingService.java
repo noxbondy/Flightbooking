@@ -45,5 +45,5 @@ public interface FlightBookingService {
     List<AvailableFlightDTO> findBookingsByMaxPrice(Double maxPrice);
     List<FlightBookingDTO> fetchAllFlightList();
 
-
+    void deleteFlight(Long id);
 }

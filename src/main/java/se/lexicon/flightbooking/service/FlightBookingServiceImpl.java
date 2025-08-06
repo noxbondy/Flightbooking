@@ -182,4 +182,12 @@ public class FlightBookingServiceImpl implements FlightBookingService {
                 .map(mapper::toDTO)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public void deleteFlight(Long id) {
+        FlightBooking flightBooking = flightRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Flight with id " + id + " not found"));
+
+        flightRepository.delete(flightBooking);
+    }
 }

@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import se.lexicon.flightbooking.service.ChatClientService;
 import java.util.List;
+import java.util.UUID;
 
 @CrossOrigin(origins = "http://localhost:5173")
 @RestController
@@ -19,12 +20,12 @@ public class OpenAIController {
     }
 
     @PostMapping("/chat")
-    public ResponseEntity<String> chat(@RequestParam String conversationId, @RequestBody ChatRequest request) {
+    public ResponseEntity<String> chat(@RequestBody ChatRequest request) {
         if (request.getQuery() == null || request.getQuery().isBlank()) {
             return ResponseEntity.badRequest().body("Query cannot be empty");
         }
         try {
-            String response = chatClientService.chatWithMemory(request.getQuery(), conversationId);
+            String response = chatClientService.chatWithMemory(request.getQuery());
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body("❌ Error processing request: " + e.getMessage());
@@ -32,33 +33,30 @@ public class OpenAIController {
     }
 
     @PostMapping("/chat/stream")
-    public Flux<String> chatStream(@RequestParam String conversationId, @RequestBody ChatRequest request) {
-        return chatClientService.chatWithMemoryRealTime(request.getQuery(), conversationId);
+    public Flux<String> chatStream(@RequestBody ChatRequest request) {
+        return chatClientService.chatWithMemoryRealTime(request.getQuery());
     }
 
-    @GetMapping("/chat/history/{conversationId}")
-    public ResponseEntity<List<?>> getMessages(@PathVariable String conversationId) {
-        return ResponseEntity.ok(chatClientService.getMessages(conversationId));
+    @GetMapping("/chat/history")
+    public ResponseEntity<List<?>> getMessages() {
+        return ResponseEntity.ok(chatClientService.getMessages());
     }
 
-    @DeleteMapping("/chat/clear/{conversationId}")
-    public ResponseEntity<String> clearChat(@PathVariable String conversationId) {
-        chatClientService.clearChatMemory(conversationId);
-        return ResponseEntity.ok("✅ Chat memory cleared for conversation ID: " + conversationId);
+    @DeleteMapping("/chat/clear")
+    public ResponseEntity<String> clearChat() {
+        chatClientService.clearChatMemory();
+        return ResponseEntity.ok("✅ Chat memory cleared");
     }
 
-    // Optional test endpoint
     @GetMapping("/ping")
     public String ping() {
         return "Flight Booking Assistant is up and running 🚀";
     }
 
-    // Inner static class to receive query
     public static class ChatRequest {
         private String query;
 
-        public ChatRequest() {
-        }
+        public ChatRequest() {}
 
         public ChatRequest(String query) {
             this.query = query;
@@ -73,6 +71,13 @@ public class OpenAIController {
         }
     }
 }
+
+
+
+
+
+
+
 
 
 

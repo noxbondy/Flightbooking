@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -160,6 +161,18 @@ public class FlightBookingController {
 
         List<AvailableFlightDTO> result = flightBookingService.findBookingsByMaxPrice(maxPrice);
         return ResponseEntity.ok(result);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteFlight(@PathVariable Long id) {
+        try {
+            flightBookingService.deleteFlight(id);
+            return ResponseEntity.ok("Flight with ID " + id + " was successfully deleted.");
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error deleting flight: " + e.getMessage());
+        }
     }
 
 }

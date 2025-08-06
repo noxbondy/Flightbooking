@@ -14,9 +14,14 @@ import java.util.List;
 
 @Service
 public class ChatClientServiceImpl implements ChatClientService {
+
     private final ChatClient chatClient;
     private final ChatMemory chatMemory;
     private final AppToolCalling appToolCalling;
+
+    // We'll store all chat in a single "default" conversation
+    private static final String DEFAULT_CONVERSATION_ID = "global-chat";
+
     private final String systemMessage = """
             You are a helpful flight booking assistant. Your role is to help users:
             - Find available flights
@@ -30,23 +35,26 @@ public class ChatClientServiceImpl implements ChatClientService {
             """;
 
     @Autowired
-    public ChatClientServiceImpl(ChatMemory chatMemory, ChatClient.Builder chatClient, AppToolCalling appToolCalling ){
+    public ChatClientServiceImpl(ChatMemory chatMemory,
+                                 ChatClient.Builder chatClient,
+                                 AppToolCalling appToolCalling) {
         this.chatMemory = chatMemory;
         this.appToolCalling = appToolCalling;
         this.chatClient = chatClient
                 .defaultAdvisors(
-                        MessageChatMemoryAdvisor.builder(this.chatMemory).build())
+                        MessageChatMemoryAdvisor.builder(this.chatMemory).build()
+                )
                 .build();
     }
 
     @Override
-    public String chatWithMemory(String query, String conversationId) {
+    public String chatWithMemory(String query) {
         ChatResponse chatResponse = this.chatClient
                 .prompt()
                 .user(query)
                 .system(systemMessage)
                 .tools(appToolCalling)
-                .advisors(advisorSpec -> advisorSpec.param(ChatMemory.CONVERSATION_ID, conversationId))
+                .advisors(advisorSpec -> advisorSpec.param(ChatMemory.CONVERSATION_ID, DEFAULT_CONVERSATION_ID))
                 .options(OpenAiChatOptions.builder()
                         .temperature(0.2)
                         .maxTokens(1000)
@@ -54,20 +62,18 @@ public class ChatClientServiceImpl implements ChatClientService {
                 .call()
                 .chatResponse();
 
-        Generation result = null;
-        if (chatResponse != null)
-            result = chatResponse.getResult();
+        Generation result = chatResponse != null ? chatResponse.getResult() : null;
         return result != null ? result.getOutput().getText() : "No response received.";
     }
 
     @Override
-    public Flux<String> chatWithMemoryRealTime(String query, String conversationId) {
+    public Flux<String> chatWithMemoryRealTime(String query) {
         Flux<ChatResponse> chatResponse = this.chatClient
                 .prompt()
                 .user(query)
                 .system(systemMessage)
                 .tools(appToolCalling)
-                .advisors(advisorSpec -> advisorSpec.param(ChatMemory.CONVERSATION_ID, conversationId))
+                .advisors(advisorSpec -> advisorSpec.param(ChatMemory.CONVERSATION_ID, DEFAULT_CONVERSATION_ID))
                 .options(OpenAiChatOptions.builder()
                         .temperature(0.2)
                         .maxTokens(1000)
@@ -75,26 +81,23 @@ public class ChatClientServiceImpl implements ChatClientService {
                 .stream()
                 .chatResponse();
 
-        try {
-            return chatResponse.flatMapIterable(ChatResponse::getResults)
-                    .mapNotNull(result -> result.getOutput().getText());
-        } catch (RuntimeException e){
-            throw new RuntimeException("Error processing chat query:" + e.getMessage());
-        }
+        return chatResponse
+                .flatMapIterable(ChatResponse::getResults)
+                .mapNotNull(result -> result.getOutput().getText());
     }
 
     @Override
-    public List<Message> getMessages(String conversationId){
-        return chatMemory.get(conversationId);
+    public List<Message> getMessages() {
+        return chatMemory.get(DEFAULT_CONVERSATION_ID);
     }
 
     @Override
-    public void clearChatMemory(String conversationId) {
-        this.chatMemory.clear(conversationId);
+    public void clearChatMemory() {
+        this.chatMemory.clear(DEFAULT_CONVERSATION_ID);
     }
 
     @Override
-    public String chatMemory(String question, String conversationId) {
-        return "";
+    public String chatMemory(String question) {
+        return chatWithMemory(question);
     }
 }

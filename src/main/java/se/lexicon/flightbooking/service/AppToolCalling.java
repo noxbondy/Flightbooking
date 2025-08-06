@@ -26,16 +26,21 @@ public class AppToolCalling {
         this.flightRepository = flightRepository;
     }
 
-    @Tool(name = "bookAirTicket", description = "Books an air ticket using flight ID, passenger name, and email")
-    public String bookAirTicket(Long flightId, String name, String email) {
+    @Tool(name = "bookAirTicket", description = "Books an air ticket using flight number, passenger name, and email")
+    public String bookAirTicket(String flightNumber, String name, String email) {
         try {
+            FlightBooking flight = flightRepository.findByFlightNumber(flightNumber);
+            if (flight == null) {
+                return "❌ Flight number " + flightNumber + " not found.";
+            }
             BookFlightRequestDTO request = new BookFlightRequestDTO(name, email);
-            var response = flightBookingService.bookFlight(flightId, request);
+            var response = flightBookingService.bookFlight(flight.getId(), request);
             return "✅ Ticket booked successfully: " + response.flightNumber() + " for " + name;
         } catch (Exception e) {
             return "❌ Booking failed: " + e.getMessage();
         }
     }
+
 
     @Tool(description = "Get all active flights from the database.")
     public List<String> getAvailableFlights() {
@@ -125,5 +130,7 @@ public class AppToolCalling {
                         f.getPrice()))
                 .toList();
     }
+
+
 
 }

@@ -32,4 +32,6 @@ public interface FlightRepository extends JpaRepository<FlightBooking, Long> {
     List<FlightBooking> findByFlightNumberAndStatus(String flightNumber, FlightStatus status);
 
     List<FlightBooking> findByDestinationAirportIgnoreCase(String destination);
+
+    FlightBooking findByFlightNumber(String flightNumber);
 }
